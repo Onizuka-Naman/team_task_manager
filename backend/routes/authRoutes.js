@@ -2,12 +2,17 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const auth = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Please fill all fields" });
+    }
 
     const existingUser = await User.findOne({ email });
 
@@ -34,6 +39,10 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: "Please fill all fields" });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -56,6 +65,16 @@ router.post("/login", async (req, res) => {
     );
 
     res.json({ token, user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// get all users (for assigning tasks)
+router.get("/users", auth, async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

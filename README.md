@@ -1,45 +1,82 @@
 # Team Task Manager
 
-This is a simple full-stack Team Task Manager project made using React, Node.js, Express, and MongoDB.
+A full-stack Team Task Manager built with React, Node.js, Express, and MongoDB. The app lets teams create projects, assign tasks, and track progress — with different access levels for Admins and Members.
 
-The main idea of this project is to help teams manage projects and tasks with role-based access. Admin users can create projects/tasks while members can track task progress.
-
-I built this project to practice full-stack development concepts like authentication, REST APIs, Database integration, and deployment.
+I built this to get hands-on experience with real-world full-stack concepts like JWT auth, role-based access control, REST APIs, and cloud deployment.
 
 ---
 
 ## Features
 
-- User Signup & Login
-- JWT Authentication
-- Role-Based Access (Admin / Member)
-- Create and Manage Tasks
-- Task Status Tracking
-- Dashboard for Viewing Tasks
-- MongoDB Database Integration
-- REST APIs using Express.js
+- User Signup & Login (JWT-based)
+- Role-Based Access Control (Admin / Member)
+- Admins can create/delete projects and tasks, assign tasks to members
+- Members can view tasks and update their status
+- Overdue task detection and highlighting
+- Dashboard with task stats (total, in progress, overdue, completed)
+- Project management with descriptions
+- Responsive UI — works on mobile and desktop
 
 ---
 
 ## Tech Stack
 
-### Frontend
-- React
-- Vite
+**Frontend**
+- React + Vite
+- React Router DOM
 - Axios
-- CSS
+- CSS (Inter font, no frameworks)
 
-### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT
+**Backend**
+- Node.js + Express
+- MongoDB + Mongoose
+- bcryptjs (password hashing)
+- JSON Web Tokens (JWT)
 
 ---
 
 ## Folder Structure
 
-```bash
+```
 backend/
+  config/db.js          # MongoDB connection with reconnect
+  middleware/           # Auth + role middleware
+  models/               # User, Project, Task schemas
+  routes/               # Auth, Project, Task routes
+  server.js
+
 frontend/
+  src/
+    pages/              # Login, Register, Dashboard
+    api.js              # Axios instance with auth interceptor
+    styles.css
+  index.html
+```
+
+---
+
+## Local Setup
+
+```bash
+# Backend
+cd backend
+npm install
+# create a .env file with MONGO_URI and JWT_SECRET
+npm run dev
+
+# Frontend
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## Deployment
+
+Deployed on [Railway](https://railway.app) — backend and frontend run as separate services.
+
+Environment variables set in Railway dashboard:
+- `MONGO_URI` — MongoDB Atlas connection string
+- `JWT_SECRET` — secret key for signing tokens
+- `VITE_API_URL` — backend URL (set in frontend service)
