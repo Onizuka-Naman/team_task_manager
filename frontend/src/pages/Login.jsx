@@ -12,14 +12,13 @@ function Login() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
       const res = await API.post("/auth/login", form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong");
+      setError(err.response?.data?.message || "Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }
@@ -27,15 +26,20 @@ function Login() {
 
   return (
     <div className="auth-wrapper">
-      <div className="container">
-        <h2>Welcome back</h2>
-        <p className="sub">Sign in to your account</p>
+      <div className="auth-card">
+        <div className="auth-logo">
+          <div className="auth-logo-icon">✓</div>
+          <div className="auth-logo-text">Team Task Manager</div>
+        </div>
 
-        {error && <div className="error-msg">{error}</div>}
+        <h2>Welcome back</h2>
+        <p className="sub">Sign in to continue to your dashboard</p>
+
+        {error && <div className="error-msg">⚠ {error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label>Email address</label>
             <input
               type="email"
               placeholder="you@example.com"
@@ -44,7 +48,6 @@ function Login() {
               required
             />
           </div>
-
           <div className="form-group">
             <label>Password</label>
             <input
@@ -55,9 +58,8 @@ function Login() {
               required
             />
           </div>
-
-          <button className="btn btn-primary" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+          <button className="btn btn-primary" type="submit" disabled={loading}>
+            {loading ? "Signing in..." : "Sign in →"}
           </button>
         </form>
 

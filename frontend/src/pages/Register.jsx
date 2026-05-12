@@ -12,12 +12,11 @@ function Register() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
       await API.post("/auth/register", form);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.response?.data?.message || "Registration failed. Try again.");
     } finally {
       setLoading(false);
     }
@@ -25,15 +24,20 @@ function Register() {
 
   return (
     <div className="auth-wrapper">
-      <div className="container">
-        <h2>Create an account</h2>
-        <p className="sub">Join your team on Task Manager</p>
+      <div className="auth-card">
+        <div className="auth-logo">
+          <div className="auth-logo-icon">✓</div>
+          <div className="auth-logo-text">Team Task Manager</div>
+        </div>
 
-        {error && <div className="error-msg">{error}</div>}
+        <h2>Create an account</h2>
+        <p className="sub">Join your team and start managing tasks</p>
+
+        {error && <div className="error-msg">⚠ {error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Full Name</label>
+            <label>Full name</label>
             <input
               placeholder="John Doe"
               value={form.name}
@@ -41,9 +45,8 @@ function Register() {
               required
             />
           </div>
-
           <div className="form-group">
-            <label>Email</label>
+            <label>Email address</label>
             <input
               type="email"
               placeholder="you@example.com"
@@ -52,18 +55,16 @@ function Register() {
               required
             />
           </div>
-
           <div className="form-group">
             <label>Password</label>
             <input
               type="password"
-              placeholder="Min 6 characters"
+              placeholder="Choose a password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
             />
           </div>
-
           <div className="form-group">
             <label>Role</label>
             <select
@@ -74,9 +75,8 @@ function Register() {
               <option value="Admin">Admin</option>
             </select>
           </div>
-
-          <button className="btn btn-primary" disabled={loading}>
-            {loading ? "Creating account..." : "Register"}
+          <button className="btn btn-primary" type="submit" disabled={loading}>
+            {loading ? "Creating account..." : "Create account →"}
           </button>
         </form>
 
